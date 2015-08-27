@@ -1,6 +1,11 @@
 $fn=100;
 
-//use <thingiverse\parametric_involute_gear_v5.0.scad>
+// takes forever to render so I replaced them with the rendered STLs
+// If you want the library, go to http://www.thingiverse.com/thing:3575
+// The file I used is here: http://www.thingiverse.com/download:10581
+// uncomment the line below and the 2 bevel_gear() lines later
+//use <parametric_involute_gear_v5.0.scad>
+
 use <servo.scad>
 
 module door_cap_frame(padding=5)
@@ -74,7 +79,8 @@ module knob_gear(test=false)
 	{	
 		difference()
 		{
-			translate([0,0,5]) bevel_gear(number_of_teeth=gear1_teeth,cone_distance=cone_distance,pressure_angle=20,outside_circular_pitch=outside_circular_pitch);
+			translate([0,0,5]) import("knob_gear_raw.stl",convexity=3);
+			//bevel_gear(number_of_teeth=gear1_teeth,cone_distance=cone_distance,pressure_angle=20,outside_circular_pitch=outside_circular_pitch);
 			knob_hub(height=25,shell=true);
 			for(i=[-10,25]) translate([0,0,i]) cube([100,100,20],center=true);
 			difference(){ cylinder(r=60,h=40,center=true); cylinder(r=35,h=50,center=true); }
@@ -89,7 +95,8 @@ module servo_gear(test=false)
 	{
 		difference()
 		{
-			bevel_gear(number_of_teeth=gear2_teeth,cone_distance=cone_distance,pressure_angle=20,outside_circular_pitch=outside_circular_pitch,bore_diameter=12);
+			import("servo_gear_raw.stl",convexity=3);
+			//bevel_gear(number_of_teeth=gear2_teeth,cone_distance=cone_distance,pressure_angle=20,outside_circular_pitch=outside_circular_pitch,bore_diameter=12);
 			for(i=[0:3]) rotate(a=i*90) translate([0,13,0]) cylinder(r=1,h=40);
 			difference(){ cylinder(r=60,h=40,center=true); cylinder(r=24,h=50,center=true); }
 		}
@@ -100,16 +107,12 @@ door_cap_frame();
 
 translate([-10,0,20])
 {
-    % knob_gear(true);
-    difference(){ knob_hub(height=15); cube([0.5,100,50],center=true); }
+	knob_gear(); //% knob_gear(true);
+	difference(){ knob_hub(height=20); cube([0.5,100,50],center=true); }
 }
 
 translate([30,0,48.5]) rotate([90,0,-90])
 {
-    % servo_gear(true);
-	rotate([0,0,90]) translate([-10,0,-20])
-	{
-		% servo();
-		rotate([0,180,0]) servo_mount();
-	}
+	servo_gear(); //% servo_gear(true);
+	rotate([0,0,90]) translate([-10,0,-20]) { % servo(); rotate([0,180,0]) servo_mount(); }
 }

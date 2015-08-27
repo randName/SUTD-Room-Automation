@@ -77,19 +77,20 @@ module rail_mount()
 	difference()
 	{
 		rail_clasp();
-		for(i=8.5*[-3,-1,1,3]) translate([i,0,0]) cylinder(r=2.5,h=30,center=true);
+		for(i=[-3,-1,1,3]) translate([i*10,0,0]) cylinder(r=2.5,h=30,center=true);
 	}
 	
 	difference()
 	{
 		translate([0,18,6.5]) cube([length,6,30],center=true);
-		for(i=8*[-3,-1,1,3]) for(j=[-1.25,-1,-0.75,0.75,1,1.25]) translate([i+j,13.5,14]) rotate([90,0,0])
-		{
-			cylinder(r=3.5,h=10,$fn=6,center=true);
-			cylinder(r=1.5,h=20,center=true);
-		}
+		for(i=[-3,-1,1,3]) for(j=[-1,0,1])
+			translate([i*8,13.5,14]) rotate([90,0,0])
+			{
+				cylinder(r=3.5,h=10,$fn=6,center=true);
+				cylinder(r=1.5,h=20,center=true);
+			}
 	}
 }
 
-//for(i=[-1,1]) translate([i*26,0,0]) wheel_assembly();
-translate([0,0,8.5]) rail_mount();
+for(i=[-1,1]) translate([0,5*i,26]) rotate([90*i,0,0]) wheel_assembly();
+translate([0,-30,8.5]) rail_mount();
