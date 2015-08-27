@@ -1,56 +1,56 @@
 $fn=100;
 
-module servo(shell=false)
+module mounts(l,radius,m_dx,m_dy=0)
 {
-	cube([56,20.5,2.5],center=true);
-	translate([0,0,-10])
-		if(shell){ cube([44,21.5,40],true); } else { cube([42,20.5,40],true); }
-	translate([11,0,10]){ cylinder(r=6,h=1.5); cylinder(r=3,h=5); }
-	for(i=25*[-1,1]) for(j=5*[-1,1]) translate([i,j,0])
-		cylinder(r=2.25,h=30,center=true);
+	for(i=[-1,1]) for(j=[-1,1]) translate([i*m_dx/2,j*m_dy/2,0]) cylinder(r=radius,h=l,center=true);
 }
 
-module 9g_servo()
+module servo(shell=false)
 {
-	l = 23.28; // length
-	w = 12.5; // width (or depth)
-	h = 23.3; // height of main body
-	c = 6; // bottom "cap" height
-	f = 5; // length of flange
-	fz = 2.36; // thickness of flange
-	fh = 16.44 + (fz/2); // position of flange
+	body = [ 42, 20.5, 40 ];
+	body_shell = [ 44, 21.5, 40 ];
 	
-	mc = 3.75; // main cyl height
-	ax = 2.75; // axle height
-	ar = 2.455; // axle radius
-	ah = h+ax; // axle pos
-	sx = -0.89; // sub cyl center
-	sr = 2.905; // sub cyl radius
-
-	l2 = l/2;
-	l4 = l/4;
-	w2 = w/2;
+	flange = [ 56, 20.5, 2.5 ];
+	fh = 30.0;
+	
+	m_d = 50.0;
 	
 	difference()
 	{
-		union() {
-			translate( [-l2, -w2,  c] ) cube([l,w,h-c]); // main body
-			translate( [-l2, -w2,  0] ) cube([l,w,  c]); // bottom cap
-			translate( [  0,   0, fh] ) cube([l+f+f,w,fz], center=true); // flange
-			translate( [ l4,   0,  h] ) cylinder(r=l4, h=mc); // main cyl
-			translate( [ sx,   0,  h] ) cylinder(r=sr, h=mc); // sub cyl
-			translate( [ l4,   0, ah] ) cylinder(r=ar, h=ax); // axle
-		}
-		translate([ 13.89,0,16.44]) cylinder(r=1, h=10, center=true);
-		translate([-13.89,0,16.44]) cylinder(r=1, h=10, center=true);
-		translate([ 13.89+1.5,0,16.44]) cube([3,1,10], center=true);
-		translate([-13.89-1.5,0,16.44]) cube([3,1,10], center=true);
-	}	
+		cube(flange,center=true);
+		if(!shell) mounts(body[2],2.25,m_d,10);
+	}
+	if(shell) mounts(body[2],2.25,m_d,10);
+	
+	translate([0,0,body[2]/2-fh]) cube(shell?body_shell:body,center=true);
+	
+	translate([11,0,body[2]-fh]){ cylinder(r=6,h=1.5); cylinder(r=3,h=5); }
+}
+
+module 9g_servo(shell=false)
+{
+	body = [ 23.28, 12.5, 23.3 ];
+
+	flange = [ 33.28, 12.5, 2.36 ];
+	fh = 17.62;
+		
+	m_d = 27.78;
+	
+	difference()
+	{
+		cube(flange,center=true);
+		for(i=[-1,1]) translate([i*(1.5+m_d/2),0,0]) cube([3,1,flange[2]*2],center=true);
+		if(!shell) mounts(body[2],1,m_d);
+	}
+	if(shell) mounts(body[2],1,m_d);
+	
+	translate([0,0,body[2]/2-fh]) cube(body,center=true);
+	
+	translate([5.82,0,body[2]-fh]){ cylinder(r=6,h=3.75); cylinder(r=2.455,h=6.5); }	
 }
 
 module servo_mount()
 {
-	//translate([0,0,16])
 	difference()
 	{
 		translate([1,0,2]) cube([60,32,4],center=true);
@@ -59,7 +59,16 @@ module servo_mount()
 	
 	translate([30.5,0,10])
 	{
-		cube([4,32,20],center=true);
+		difference()
+		{
+			cube([4,32,20],center=true);
+			for(i=[-1,1]) for(j=[-1.25,-1,-0.75,0.75,1,1.25])
+				translate([-3.5,i*8,j+2]) rotate([0,90,0])
+				{
+					cylinder(r=3.5,h=6,$fn=6,center=true);
+					cylinder(r=1.5,h=20,center=true);
+				}
+		}
 		translate([0,0,-6]) intersection()
 		{
 			rotate([0,45,0]) cube([17.5,32,17.5],true);
@@ -70,18 +79,6 @@ module servo_mount()
 	for(i=[-1,1]) translate([1,14.5*i,5.5]) cube([60,3,3],center=true);
 }
 
-difference()
-{
-	servo_mount();
-	for(i=[-1,1]) for(j=[-1.25,-1,-0.75,0.75,1,1.25])
-	translate([27,i*8,j+12.5]) rotate([0,90,0])
-	{
-        cylinder(r=3.5,h=6,$fn=6,center=true);
-        cylinder(r=1.5,h=20,center=true);
-    }
-}
-
-//% 9g_servo();
-
-//servo_mount();
+servo_mount();
 % translate([0,0,6]) rotate([0,180,0]) servo();
+//% 9g_servo();

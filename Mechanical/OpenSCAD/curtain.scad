@@ -9,7 +9,7 @@ module wheel()
 	
 	radius = 25;
 	bead_r = 2.5;
-    
+	
 	module slice(cut=false)
 	{
 		grooves = 22;
@@ -91,16 +91,5 @@ module rail_mount()
 	}
 }
 
-
-//translate([0,-50,0]) servo_mount();
-/*
-for(j=[22,9]) translate([25.5*i,-8,j]) rotate([90,0,90])
-{
-    cylinder(r=3.5,h=10,$fn=6,center=true);
-    cylinder(r=1.5,h=20,center=true);
-}
-*/
-
 //for(i=[-1,1]) translate([i*26,0,0]) wheel_assembly();
-//translate([0,50,8.5])
-rail_mount();
+translate([0,0,8.5]) rail_mount();

@@ -5,12 +5,12 @@ use <servo.scad>
 
 module door_cap_frame(padding=5)
 {
-    cap_r = 27.5; // radius of cap
-    cap_d = 80; // distance between caps
-    
-    frame_w = (cap_r+padding)*2;
-    frame = [cap_d+frame_w,frame_w];
-
+	cap_r = 27.5; // radius of cap
+	cap_d = 80; // distance between caps
+	
+	frame_w = (cap_r+padding)*2;
+	frame = [cap_d+frame_w,frame_w];
+	
 	translate([-cap_d/2,0,0]) difference()
 	{
 		linear_extrude(3) difference()
@@ -20,7 +20,7 @@ module door_cap_frame(padding=5)
 			translate([-(cap_d+frame_w/2)/2,0,0]) square([frame_w/2,frame_w],center=true);
 		}
 	}
-
+	
 	translate([50,0,3]) difference()
 	{
 		cube([40,65,6],center=true);
@@ -36,27 +36,26 @@ module door_cap_frame(padding=5)
 		translate([-25,0,0]) cube([50,62,50],center=true);
 		difference(){ cylinder(r=32,h=19); cylinder(r=28,h=50,center=true); }
 	}
-    
 }
 
 module knob_hub(radius=20, height=20, shell=false)
 {
-    tab = [12.5,3,5];
-    knob_r = 15.5;
-    
-    if ( shell )
-    {
-        cylinder(r=radius+0.75,h=height,$fn=6);
-    }
-    else
-    {
-        linear_extrude(height) difference()
-        {
-            circle(r=radius,$fn=6); circle(r=knob_r);
-        }   
-        for(i=(tab[1]/2+sqrt(knob_r*knob_r-(tab[0]*tab[0])/4))*[-1,1])
-            translate([0,i,tab[2]/2]) cube(tab,center=true);
-    }
+	tab = [12.5,3,5];
+	knob_r = 15.5;
+	
+	if ( shell )
+	{
+		cylinder(r=radius+0.75,h=height,$fn=6);
+	}
+	else
+	{
+		linear_extrude(height) difference()
+		{
+			circle(r=radius,$fn=6); circle(r=knob_r);
+		}   
+		for(i=(tab[1]/2+sqrt(knob_r*knob_r-(tab[0]*tab[0])/4))*[-1,1])
+			translate([0,i,tab[2]/2]) cube(tab,center=true);
+	}
 }
 
 gear1_teeth = 16;
@@ -65,11 +64,8 @@ axis_angle = 90;
 outside_circular_pitch=800;
 outside_pitch_radius1 = gear1_teeth * outside_circular_pitch / 360;
 outside_pitch_radius2 = gear2_teeth * outside_circular_pitch / 360;
-pitch_apex1=outside_pitch_radius2 * sin (axis_angle) + (outside_pitch_radius2 * cos (axis_angle) + outside_pitch_radius1) / tan (axis_angle);
+pitch_apex1 = outside_pitch_radius2 * sin (axis_angle) + (outside_pitch_radius2 * cos (axis_angle) + outside_pitch_radius1) / tan (axis_angle);
 cone_distance = sqrt (pow (pitch_apex1, 2) + pow (outside_pitch_radius1, 2));
-pitch_apex2 = sqrt (pow (cone_distance, 2) - pow (outside_pitch_radius2, 2));
-pitch_angle1 = asin (outside_pitch_radius1 / cone_distance);
-pitch_angle2 = asin (outside_pitch_radius2 / cone_distance);
 
 module knob_gear(test=false)
 {

@@ -23,18 +23,13 @@ module switch_plate(shell=false)
 difference()
 {
 	translate([33,0,2]) cube([30,95,4],center=true);
-	switch_plate(true);
+	translate([0,0,-0.01]) switch_plate(true);
 }
 % switch_plate();
-
-
 
 translate([47,5.5,8.5]) difference()
 {
 	cube([8,33,17],center=true);
-	translate([10,0,6]) rotate([-90,180,90]) 9g_servo();
+	translate([-10,0,6]) rotate([-90,180,90]){ % 9g_servo(); 9g_servo(true); }
 	translate([2,0,6]) cube([5,35,10],center=true);
-	for(i=[-1,1]) translate([0,i*14+0.2,6]) rotate([0,90,0]) cylinder(r=1,h=10,center=true);
 }
-
-% translate([55,5.5,14.5]) rotate([-90,180,90]) 9g_servo();
