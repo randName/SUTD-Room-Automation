@@ -95,14 +95,18 @@ module servo_gear(test=false)
 	{
 		difference()
 		{
-			import("servo_gear_raw.stl",convexity=3);
+			union(){ import("servo_gear_raw.stl",convexity=3); cylinder(r=10,h=5); }
 			//bevel_gear(number_of_teeth=gear2_teeth,cone_distance=cone_distance,pressure_angle=20,outside_circular_pitch=outside_circular_pitch,bore_diameter=12);
-			for(i=[0:3]) rotate(a=i*90) translate([0,13,0]) cylinder(r=1,h=40);
+			//for(i=[0:3]) rotate(a=i*90) translate([0,13,0]) cylinder(r=1,h=40);
 			difference(){ cylinder(r=60,h=40,center=true); cylinder(r=24,h=50,center=true); }
+			cylinder(r=1.5,h=15,center=true);
+			translate([0,0,-0.5]) import("involute.stl",convexity=3);
 		}
 	}
 }
 
+servo_gear();
+/*
 door_cap_frame();
 
 translate([-10,0,20])
@@ -116,3 +120,4 @@ translate([30,0,48.5]) rotate([90,0,-90])
 	servo_gear(); //% servo_gear(true);
 	rotate([0,0,90]) translate([-10,0,-20]) { % servo(); rotate([0,180,0]) servo_mount(); }
 }
+*/
