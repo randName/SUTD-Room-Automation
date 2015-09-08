@@ -49,5 +49,7 @@ with
     mqtt:localbroker.clientId=openHAB
 
 ### Other references
-[OpenHAB Control of LED via MQTT and ESP8266](https://mydiyelectronics.wordpress.com/2015/01/26/135/)
-[OpenHAB, Python and MQTT](https://mydiyelectronics.wordpress.com/2015/03/09/openhab-python-and-mqtt/) (Why doesn't he just do the conversion on the ESP8266?)
+- [1. Setting up OpenHAB](https://openhardwarecoza.wordpress.com/2015/03/29/openhab-mqtt-arduino-and-esp8266-part-1-setting-up-your-environment/)
+- [2. MQTT and ESP8266](https://openhardwarecoza.wordpress.com/2015/03/29/openhab-mqtt-arduino-and-esp8266-part-2-publish-subscribe-command-state-and-wtfs/)
+- [OpenHAB Control of LED via MQTT and ESP8266](https://mydiyelectronics.wordpress.com/2015/01/26/135/)
+- [OpenHAB, Python and MQTT](https://mydiyelectronics.wordpress.com/2015/03/09/openhab-python-and-mqtt/) (Why doesn't he just do the conversion on the ESP8266?)
