@@ -1,0 +1,31 @@
+Psuedocode for Door lock
+
+Unlock
+------
+turn(unlock)
+until not locked
+
+turn(stop)
+return ok
+
+// reset catch
+turn(lock)
+2 rounds
+turn(stop)
+
+ Lock
+------
+if door not closed return error
+
+turn(lock)
+until locked
+
+// jam
+if > 2 seconds has passed
+	return error
+
+turn(stop)
+return ok
+turn(unlock)
+2 rounds
+turn(stop)
