@@ -2,13 +2,14 @@ $fn=100;
 
 use <servo.scad>
 
+bead_r = 2.5;
+
 module wheel()
 {
 	s_thick = 1.5;
 	s_gap = 1;
 	
 	radius = 25;
-	bead_r = 2.5;
 	
 	module slice(cut=false)
 	{
@@ -46,6 +47,17 @@ module wheel_assembly(spokes=12,bore=6)
 		wheel();
 		cylinder(r=bore,h=10,center=true);
 		for(i=[0:spokes-1]) rotate(a=i*360/spokes) for(j=holes) translate([0,j,0]) cylinder(r=1,h=10,center=true);
+	}
+}
+
+module limit_trigger()
+{
+	bead_d = 6.5;
+	difference()
+	{
+		translate([0,0,1.9]) cube([25,6,3.8],center=true);
+		translate([0,0,3.1]) cube([25,1,1.5],center=true);
+		for(i=[-2,-1,0,1,2]) translate([bead_d*i,0,1.35]) cylinder(r=bead_r,h=bead_r);
 	}
 }
 
@@ -92,5 +104,7 @@ module rail_mount()
 	}
 }
 
-for(i=[-1,1]) translate([0,5*i,26]) rotate([90*i,0,0]) wheel_assembly();
-translate([0,-30,8.5]) rail_mount();
+limit_trigger();
+
+//for(i=[-1,1]) translate([0,5*i,26]) rotate([90*i,0,0]) wheel_assembly();
+//translate([0,-30,8.5]) rail_mount();
