@@ -1,28 +1,47 @@
-Date/Time
-
-Lux
-- Window
-- Table
-- Ambient
-
-Temperature/Humidity
-- Room
-- Drying Cabinet
-
-Door
-- Room
-- Drying Cabinet
-
-Rain
-
-Air Quality
-
-Lock
-
-Curtain
-
-Appliances
-
-Presence
-
-Video
+/room
+	/door
+		/lock
+			/cmd
+			/state
+		/state
+	
+	/ceiling
+		/pir
+		/video
+	
+	/0
+		/window
+			/lux
+			/rain
+			/curtain
+				/cmd
+				/state
+		
+		/desk
+			/lux
+			/temp
+			/humidity
+			/airq
+			/light
+				/cmd
+				/state
+		
+		/bed
+			/lux
+			/temp
+			/humidity
+		
+		/dryer
+			/door
+			/temp
+			/humidity
+			/airq
+		
+		/appliances
+			/light
+				/cmd
+				/state
+			/fan
+				/cmd
+				/state
+	
