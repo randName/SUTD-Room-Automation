@@ -1,10 +1,7 @@
 $fn=100;
 
-// takes forever to render so I replaced them with the rendered STLs
-// If you want the library, go to http://www.thingiverse.com/thing:3575
-// The file I used is here: http://www.thingiverse.com/download:10581
-// uncomment the line below and the 2 bevel_gear() lines later
-//use <parametric_involute_gear_v5.0.scad>
+// takes forever to render so I replaced them with rendered STLs
+use <involute_gears.scad>
 
 use <servo.scad>
 
@@ -100,7 +97,6 @@ module servo_gear(test=false)
 			//for(i=[0:3]) rotate(a=i*90) translate([0,13,0]) cylinder(r=1,h=40);
 			difference(){ cylinder(r=60,h=40,center=true); cylinder(r=24,h=50,center=true); }
 			cylinder(r=1.5,h=15,center=true);
-			translate([0,0,-0.5]) import("involute.stl",convexity=3);
 		}
 	}
 }
