@@ -4,6 +4,7 @@
 			/cmd
 			/state
 		/state
+		/peephole
 	
 	/ceiling
 		/pir
