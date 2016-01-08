@@ -1,8 +1,11 @@
 $fn=100;
 
-module mounts(l,radius,m_dx,m_dy=0)
+translate([11,0,1]) rotate([0,180,0]) servo();
+//% 9g_servo();
+
+module mounts(radius,m_dx,m_dy=0)
 {
-	for(i=[-1,1]) for(j=[-1,1]) translate([i*m_dx/2,j*m_dy/2,0]) cylinder(r=radius,h=l,center=true);
+	for(i=[-1,1],j=[-1,1]) translate(.5*[i*m_dx,j*m_dy]) circle(r=radius);
 }
 
 module servo(shell=false)
@@ -14,17 +17,24 @@ module servo(shell=false)
 	fh = 30.0;
 	
 	m_d = 50.0;
-	
-	difference()
-	{
-		cube(flange,center=true);
-		if(!shell) mounts(body[2],2.25,m_d,10);
-	}
-	if(shell) mounts(body[2],2.25,m_d,10);
-	
-	translate([0,0,body[2]/2-fh]) cube(shell?body_shell:body,center=true);
-	
-	translate([11,0,body[2]-fh]){ cylinder(r=6,h=1.5); cylinder(r=3,h=5); }
+
+	if(shell)
+    {
+        mounts(2.25,m_d,10);
+        square([body[0],body[1]],true);
+    }
+    else
+    {
+        color("DimGray") translate([0,0,-flange[2]/2]) linear_extrude(flange[2]) difference()
+        {
+            square([flange[0],flange[1]],true);
+            mounts(2.25,m_d,10);
+        }
+        
+        color("DimGray") translate([0,0,body[2]/2-fh]) cube(shell?body_shell:body,true);
+        
+        color("White") translate([11,0,body[2]-fh]){ cylinder(r=6,h=1.5); cylinder(r=3,h=5); }
+    }
 }
 
 module 9g_servo(shell=false)
@@ -36,13 +46,14 @@ module 9g_servo(shell=false)
 		
 	m_d = 27.78;
 	
-	difference()
+    translate([0,0,-flange[2]/2]) linear_extrude(flange[2]) difference()
 	{
-		cube(flange,center=true);
-		for(i=[-1,1]) translate([i*(1.5+m_d/2),0,0]) cube([3,1,flange[2]*2],center=true);
-		if(!shell) mounts(body[2],1,m_d);
+		square([flange[0],flange[1]],true);
+		mounts(1,m_d);
+        for(i=[-1,1]) translate([i*(1.5+m_d/2),0]) square([3,1],true);
 	}
-	if(shell) mounts(body[2],1,m_d);
+		
+	if(shell) translate([0,0,-body[2]/2]) linear_extrude(body[2]) mounts(1,m_d);
 	
 	translate([0,0,body[2]/2-fh]) cube(body,center=true);
 	
@@ -78,7 +89,3 @@ module servo_mount()
 
 	for(i=[-1,1]) translate([1,14.5*i,5.5]) cube([60,3,3],center=true);
 }
-
-servo_mount();
-% translate([0,0,6]) rotate([0,180,0]) servo();
-//% 9g_servo();
