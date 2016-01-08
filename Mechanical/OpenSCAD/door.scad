@@ -1,6 +1,5 @@
 $fn=100;
 use <../MCAD/involute_gears.scad>
-
 use <servo.scad>
 
 r_gap = 0.05;
@@ -11,13 +10,16 @@ gear_j = 20;
 gear1_t = 24;
 gear2_t = 22;
 
-//assembly(.5);
+assembly(.5);
 
-translate([100,105]) border([200,210]);
-//translate([105,100]) border([210,200]);
+//translate([100,105]) border([200,210]);
+//translate([0,210]) rotate(-90) translate([32,32]) layout();
 
-translate([0,210]) rotate(-90)
-translate([32,32])
+//3mm
+//delay_ring(); 
+//delay_ring_holder();
+
+module layout()
 {    
     case(); gear_ring(hold_or); gear2_lock();
     translate([0,61.5]){ case(); knob_ring(hold_or); corners(14.5) spacer_ring(); }
@@ -46,10 +48,6 @@ translate([32,32])
     translate([82,138]) gear1();
     translate([30,123]){ knob_ring(); corners(14.5) spacer_ring(); }
 }
-
-//3mm
-//delay_ring(); 
-//delay_ring_holder();
 
 module assembly(s=0.01)
 {
