@@ -45,8 +45,8 @@ module layout()
         for(j=[-1,0,1]) translate([j*13-11,47]) spacer_ring(nut=false);
     }
     
-    translate([82,138]) gear1();
-    translate([30,123]){ knob_ring(); corners(14.5) spacer_ring(); }
+    translate([83,138]) gear1();
+    translate([31,123]){ knob_ring(l=true); corners(14.5) spacer_ring(); }
 }
 
 module assembly(s=0.01)
@@ -109,10 +109,15 @@ module assembly(s=0.01)
     
     put_layer(6,h,s)
     {
-        knob_ring();
+        rotate([0,180,0]) knob_ring(l=true);
         corners(48) spacer_ring();
     }
     
+    translate([0,0,sum(h,6)+s*7])
+    {
+         microswitch_pos(75) microswitch();
+    }
+
     put_layer(7,h,s)
     {
          servo_holder(full=true);
@@ -188,7 +193,7 @@ module knob_hub(radius=20, height=20, flat=false)
 
 module knob_hub_split() color("White") difference(){ knob_hub(height=10); cube([0.5,100,50],true); }
 
-module microswitch_pos(r=105,t=33.75) rotate(r) translate([0,-t]) children();
+module microswitch_pos(r=105,t=33.5) rotate(r) translate([0,-t]) children();
 
 module microswitch(flat=false)
 {
@@ -223,7 +228,7 @@ module door_caps(flat=false,center=false)
 
 // Knob case
 
-module limit_protrusion() translate([0,-ring_or+1]) polygon([[2.25,-2.5],[6,0],[-6,0],[-2.25,-2.5]]);
+module limit_protrusion() translate([0,-ring_or+1]) polygon([[2,-2.5],[5,0],[-5,0],[-2,-2.5]]);
 
 module spacer_ring(nut=true)
 {
@@ -271,9 +276,9 @@ module knob_ring(rd=ring_or,l=false)
 		circle(r=rd);
         dpin();
         knob_hub(flat=true);
-        for(i=[1,2,4,5]) rotate(i*60) hole(hd,nut=(l&&(i-1)%3)||(!((i-1)%3||l)&&rd==ring_or));
+        for(i=[1,2,4,5]) rotate(i*60) hole(hd,nut=l&&(i+1)%3);
 	}
-    if ( l ) limit_protrusion();
+    if ( l ) ring(12) limit_protrusion();
 }
 
 module delay_ring(t=1.5)
@@ -309,7 +314,7 @@ module gear_ring(rd=ring_or,l=false)
         circle(r=knob_or);
         for(i=[1:2:7]) rotate(i*45) hole(gear_j,nut=l&&((i+1)%4));
 	}
-    if ( l ) limit_protrusion();
+    if ( l ) ring(12) limit_protrusion();
 }
 
 module gear1()
