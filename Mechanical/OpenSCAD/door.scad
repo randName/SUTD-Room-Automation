@@ -199,7 +199,7 @@ module microswitch(flat=false)
 {
     if( flat )
     {
-        for(i=3.25*[-1,1]) translate([i,0,0]) circle(r=1);
+        for(i=3.25*[-1,1]) translate([i,0]) circle(r=1);
     }
     else
     {
@@ -246,14 +246,14 @@ module hole(o,p=2,nut=false)
 
 module dpin(t=21.75,s=1.9) hole(t,s);
 
-module microswitch_extension()
+module pangu()
 {
     difference()
     {
-        translate([30,0]) hull() corners([10,50]) circle(r=5);
+        translate([29,0]) hull() corners([10,50]) circle(r=5);
         translate([29,0]) corners([10,48]) circle(d=3);
-        circle(r=hold_or+r_gap);
-        for(i=[-1,1]) microswitch_pos(90+i*15) microswitch(flat=true);
+        circle(r=ring_or+2.5);
+        for(i=[-1,1],j=[-1,1]) microswitch_pos(90+j*15) translate(3.25*[i,0]) circle(d=5);
     }
 }
 
@@ -261,11 +261,15 @@ module case()
 {
     difference()
     {
-        hull() corners(50) circle(d=10);
+        union()
+        {
+            hull() corners(50) circle(d=10);
+            intersection(){ circle(r=37.5); translate([30,0]) square([15,45],true); }
+        }
         corners(48) circle(d=3);
         circle(r=hold_or+r_gap);
+        for(i=[-1,1]) microswitch_pos(90+i*15) microswitch(flat=true);
     }
-    microswitch_extension();
 }
 
 module knob_ring(rd=ring_or,l=false)
@@ -394,10 +398,9 @@ module door_cap_frame()
 {	
 	difference()
     {
-        translate([3,10]) hull() corners([63,95]) circle(d=10);
-        for(i=[-1,1],j=[0,90]) rotate(j) translate([34.5,i*24]) circle(d=3);
+        translate([0,10]) hull() corners([68,95]) circle(d=10);
+        corners([68,48]) circle(d=3);
         corners(48) circle(d=3);
-        translate([0,-12]) corners(48) circle(d=3);
         door_caps(flat=true);
 	}
 }
