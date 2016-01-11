@@ -53,14 +53,15 @@ module assembly(s=0.01)
 {
     h = [ 2, 2, 2, 3, 2, 2, 2, 2 ];
     
-    translate([0,0,-10]) acrylic(2) door_cap_frame();
+    translate([0,0,-15]) acrylic(2) door_cap_frame();
     
-    translate([0,-60,-5]) rotate(90) acrylic(2) board_mount();
+    translate([58,0,-12]) acrylic(2) board_mount();
     
     put_layer(0,h,s)
     {
         gear1();
         gear2_pos() gear2();
+        for(i=[0,180]) rotate(i) pangu();
     }
     
     put_layer(1,h,s)
@@ -337,7 +338,7 @@ module gear2_pos(r=0) rotate(r) translate([0,-gear1_t-gear2_t]) rotate_gear(r,ge
 module gear2_key()
 {
     ring() for(i=[7.5,10,13]) hole(i);
-    rotate(45) ring() for(i=[8,12]) hole(i);
+    rotate(45) ring() for(i=[9,12.5]) hole(i);
     circle(d=6);
 }
 
@@ -364,7 +365,7 @@ module gear2_holder()
     inr = 15;
     difference()
     {
-        translate([0,-40]) hull() corners([50,34]) circle(d=10);
+        translate([0,-41]) hull() corners([50,35]) circle(d=10);
         circle(r=ring_or+2.5);
         corners(48) circle(d=3);
         gear2_pos() circle(r=inr+r_gap);
@@ -409,9 +410,9 @@ module board_mount()
 {
     difference()
     {
-        translate([10,0]) hull() corners([30,50]) circle(d=10);
+        translate([0,0]) hull() corners([50,50]) circle(d=10);
         corners(48) circle(d=3);
         for(i=[-1:1],j=[-1:1]) translate((27.9/2)*[i,j]) circle(d=3);
-        translate([50,0]) circle(d=55);
+        rotate(45) ring() translate([50,0]) circle(d=55);
     }
 }
